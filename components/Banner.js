@@ -17,7 +17,7 @@ function Banner() {
                 {/* main advantage of tailwind over bootstrap is all the tags have default nne styling so we dont have to configure h1
                 button h2 etc.*/}
                 {/* margin is outside the component while padding is inside the component */}
-                <button className="text-purple-500 bg-white px-10 py-4 shadow-md
+                <button className="text-purple-500 bg-white px-10 py-4 shad ow-md
                 rounded-full font-bold my-3 hover:shadow-xl active:scale-90 transition duration-150"> I am flexible</button>
             </div>
         </div>
