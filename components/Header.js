@@ -9,12 +9,18 @@ import { useState } from "react";
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRangePicker } from 'react-date-range';
-function Header() {
+import { useRouter  } from 'next/dist/client/router'
+// import { useRouter } from 'next/router';
+// import Router from "next/router";
+
+function Header({placeholder}) {
 
     const [searchInput,setSearchInput] = useState("");
     const [startDate,setStartDate] = useState(new Date());
     const [endDate,setendDate] = useState(new Date());
     const [guest,setGuest] = useState(1);
+    const router = useRouter();
+
     const selectionRange = {
         startDate: startDate,
         endDate: endDate,
@@ -30,12 +36,27 @@ function Header() {
         setStartDate(ranges.selection.startDate);
         setendDate(ranges.selection.endDate);
     }
+    //for dynamic information we are pushing a object instead of passing whole 
+    // another way is redux
+    const search = () => {
+        console.log("here ")
+       router.push({
+           pathname: '/search',
+           query: {
+               location: searchInput,
+               startDate: startDate.toISOString(),
+               endDate : endDate.toISOString(),
+               noGuest: guest,
+           }
+       });
+    }
     return (
         // z index is used to always keep header on top and header is sticky and will stick at top for grid view 
         // and grid view has 3 col shadow   
         <header className="sticky top-0 z-50 grid grid-cols-3 
         bg-white shadow-md p-5 md:px-10">     
-        <div className="relative flex items-center h-10 cursor-pointer my-auto">
+        <div onClick={() => router.push("/")} 
+        className="relative flex items-center h-10 cursor-pointer my-auto">
             {/* Left  */}
             <Image 
                 src='https://links.papareact.com/qd3'
@@ -49,7 +70,8 @@ function Header() {
             <input 
             value = {searchInput}
             onChange= {(e) => setSearchInput(e.target.value)}
-            className="flex-grow pl-5 bg-transparent outline-none text-sm" type="text" placeholder="Start your search"/>
+            className="flex-grow pl-5 bg-transparent outline-none text-sm" type="text"
+            placeholder={placeholder  || "Start your search" } />
             {/* initially it is hidden once we use md:inline-flex it will be visible is full screen */}
             <SearchIcon className="hidden md:inline-flex h-8 bg-red-400 icon
             text-white rounded-full p-2 cursor-pointer md:mx-2"/>
@@ -79,7 +101,7 @@ function Header() {
             </div>
             <div className="flex">
                 <button onClick={resetInput} className="flex-grow text-gray-500">Cancel</button>
-                <button className="flex-grow text-red-500">Search</button>
+                <button onClick={search} className="flex-grow text-red-500">Search</button>
             </div>
 
         </div>
